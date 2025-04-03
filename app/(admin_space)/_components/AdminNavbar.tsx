@@ -1,5 +1,5 @@
 /*
-  This Navbar requires some changes to your config:
+  This AdminNavbar requires some changes to your config:
   
   ```
   // tailwind.config.js
@@ -27,8 +27,8 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import codeColor from "@/public/constants/color";
 import { useState } from "react";
 
-export default function Navbar() {
-  const [selected, setSelected] = useState("accueil");
+export default function AdminNavbar() {
+  const [selected, setSelected] = useState("ajouter un produit");
   const styleSelected =
     "inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900";
   const styleDefault =
@@ -48,13 +48,17 @@ export default function Navbar() {
             </div>
             <div className="hidden lg:ml-6 lg:flex lg:space-x-8">
               <a
-                href="accueil"
-                onClick={() => setSelected("accueil")}
+                href="add_product"
+                onClick={() => {
+                  setSelected("ajouter un produit");
+                }}
                 className={
-                  selected === "accueil" ? styleSelected : styleDefault
+                  selected === "ajouter un produit"
+                    ? styleSelected
+                    : styleDefault
                 }
               >
-                Accueil
+                Ajouter un produit
               </a>
               <a
                 href="A-propos"
@@ -225,7 +229,7 @@ export default function Navbar() {
                 Tom Cook
               </div>
               <div className="text-sm font-medium text-gray-500">
-                tom@Navbar.com
+                tom@AdminNavbar.com
               </div>
             </div>
             <button
