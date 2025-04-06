@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import Header from "./_LandingPageCompoenets/Header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +27,14 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {/* <Header /> */}
-        {children}
+        <div
+          className=" mx-auto min-h-screen"
+          style={{
+            background: `radial-gradient(circle at 10% 100%, #e0f2fe, #f0f9ff, #f8fafc)`,
+          }}
+        >
+          {children}
+        </div>
       </body>
     </html>
   );

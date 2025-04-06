@@ -6,9 +6,11 @@ import { Badge } from "@/components/ui/badge";
 import { ChevronRight, Heart } from "lucide-react";
 import { useState } from "react";
 import equipement from "../../public/equipment.jpg";
+import { useRouter } from "next/navigation";
 
 function ProductsSection() {
   const [activeCategory, setActiveCategory] = useState("featured");
+  const router = useRouter();
 
   return (
     <section className="container mx-auto py-12 relative">
@@ -52,7 +54,12 @@ function ProductsSection() {
               transition={{ duration: 0.5, delay: item * 0.1 }}
               className="group"
             >
-              <Card className="overflow-hidden h-full transition-all duration-300 hover:shadow-lg">
+              <Card
+                className="overflow-hidden h-full transition-all duration-300 hover:shadow-lg cursor-pointer"
+                onClick={() => {
+                  router.push("/product/1");
+                }}
+              >
                 <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
                   <img
                     src={equipement.src}
