@@ -1,24 +1,11 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Slider } from "@/components/ui/slider";
-import { Switch } from "@/components/ui/switch";
-import {
-  Camera,
-  ChevronRight,
-  Edit3,
-  ImagePlus,
-  Layers,
-  Package,
-  Palette,
-  Plus,
-  Save,
-  Tag,
-} from "lucide-react";
+import { ChevronRight, Plus, Save } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -26,8 +13,46 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import Prodcut_Identity from "./Prodcut_Identity";
+import Galery from "./Galery";
+import Descreption_Card from "./Descreption_Card";
+import Prcing from "./Prcing";
+import Preview from "./Preview";
+import { z } from "zod";
+import { Form } from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const ProductCreatorSchema = z.object({
+  identity: z.object({
+    name: z.string().min(1, "Name is required"),
+    category: z.string().min(1, "Category is required"),
+    recommendedFor: z.array(z.string()).optional(),
+    verifiedBy: z.array(z.string()).optional(),
+  }),
+  descreptions: z.object({
+    primary: z.string().min(1, "Primary description is required"),
+    technical: z.string().optional(),
+  }),
+});
 
 export default function ProductCreatorWorkspace() {
+  const form = useForm({
+    resolver: zodResolver(ProductCreatorSchema),
+    defaultValues: {
+      identity: {
+        name: "",
+        category: "",
+        recommendedFor: [],
+        verifiedBy: [],
+      },
+      descreptions: {
+        primary: "",
+        technical: "",
+      },
+    },
+  });
+  console.log("form", form.formState.errors);
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
@@ -68,310 +93,37 @@ export default function ProductCreatorWorkspace() {
 
               {/* Visual Canvas Tab */}
               <TabsContent value="canvas" className="mt-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Product Identity Card */}
-                  <Card className="overflow-hidden">
-                    <div className="bg-gradient-to-r from-cyan-50 to-blue-50 p-4 flex justify-between items-center border-b">
-                      <h3 className="font-semibold flex items-center">
-                        <Package className="mr-2 h-4 w-4" />
-                        Product Identity
-                      </h3>
-                      <Button variant="ghost" size="sm">
-                        <Edit3 className="h-4 w-4" />
-                      </Button>
+                <Form {...form}>
+                  <form
+                    onSubmit={form.handleSubmit((data: any) => {
+                      console.log("valuz", data);
+                      alert("Form submitted");
+                    })}
+                  >
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {/* Product Identity Card */}
+                      <Prodcut_Identity />
+
+                      {/* Visual Gallery Card */}
+                      <Galery />
+
+                      {/* Description Card */}
+                      <Descreption_Card />
+
+                      {/* Pricing & Inventory Card */}
+                      <Prcing />
                     </div>
-                    <CardContent className="p-6">
-                      <div className="space-y-4">
-                        <div>
-                          <Label
-                            htmlFor="name"
-                            className="text-xs uppercase text-muted-foreground"
-                          >
-                            Name
-                          </Label>
-                          <Input
-                            id="name"
-                            placeholder="Enter product name"
-                            className="mt-1 text-lg font-medium"
-                          />
-                        </div>
-
-                        <div>
-                          <Label
-                            htmlFor="brand"
-                            className="text-xs uppercase text-muted-foreground"
-                          >
-                            Brand
-                          </Label>
-                          <Input
-                            id="brand"
-                            placeholder="Product brand"
-                            className="mt-1"
-                          />
-                        </div>
-
-                        <div className="flex flex-wrap gap-2 mt-4">
-                          <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200">
-                            Medical
-                          </Badge>
-                          <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200">
-                            Equipment
-                          </Badge>
-                          <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 flex items-center gap-1">
-                            <Plus className="h-3 w-3" />
-                            Add Category
-                          </Badge>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Visual Gallery Card */}
-                  <Card className="overflow-hidden">
-                    <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-4 flex justify-between items-center border-b">
-                      <h3 className="font-semibold flex items-center">
-                        <Camera className="mr-2 h-4 w-4" />
-                        Visual Gallery
-                      </h3>
-                      <Button variant="ghost" size="sm">
-                        <Edit3 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <CardContent className="p-6">
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="aspect-square bg-slate-100 rounded-md flex flex-col items-center justify-center cursor-pointer hover:bg-slate-200 transition-colors border-2 border-dashed">
-                          <ImagePlus className="h-8 w-8 text-slate-400 mb-2" />
-                          <span className="text-xs text-slate-500">
-                            Main Image
-                          </span>
-                        </div>
-
-                        <div className="aspect-square bg-slate-100 rounded-md flex items-center justify-center cursor-pointer hover:bg-slate-200 transition-colors border-2 border-dashed">
-                          <Plus className="h-6 w-6 text-slate-400" />
-                        </div>
-
-                        <div className="aspect-square bg-slate-100 rounded-md flex items-center justify-center cursor-pointer hover:bg-slate-200 transition-colors border-2 border-dashed">
-                          <Plus className="h-6 w-6 text-slate-400" />
-                        </div>
-
-                        <div className="aspect-square bg-slate-100 rounded-md flex items-center justify-center cursor-pointer hover:bg-slate-200 transition-colors border-2 border-dashed">
-                          <Plus className="h-6 w-6 text-slate-400" />
-                        </div>
-                      </div>
-
-                      <div className="mt-4 text-center">
-                        <Button variant="outline" size="sm" className="w-full">
-                          <ImagePlus className="h-4 w-4 mr-2" />
-                          Drag & Drop or Browse
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Description Card */}
-                  <Card className="overflow-hidden">
-                    <div className="bg-gradient-to-r from-amber-50 to-yellow-50 p-4 flex justify-between items-center border-b">
-                      <h3 className="font-semibold flex items-center">
-                        <Layers className="mr-2 h-4 w-4" />
-                        Product Description
-                      </h3>
-                      <Button variant="ghost" size="sm">
-                        <Edit3 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <CardContent className="p-6">
-                      <div className="space-y-4">
-                        <div>
-                          <Label
-                            htmlFor="desc1"
-                            className="text-xs uppercase text-muted-foreground"
-                          >
-                            Primary Description
-                          </Label>
-                          <Textarea
-                            id="desc1"
-                            placeholder="Main product description"
-                            className="mt-1 resize-none"
-                            rows={3}
-                          />
-                        </div>
-
-                        <div>
-                          <Label
-                            htmlFor="desc2"
-                            className="text-xs uppercase text-muted-foreground"
-                          >
-                            Technical Details
-                          </Label>
-                          <Textarea
-                            id="desc2"
-                            placeholder="Additional technical information"
-                            className="mt-1 resize-none"
-                            rows={3}
-                          />
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Pricing & Inventory Card */}
-                  <Card className="overflow-hidden">
-                    <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 flex justify-between items-center border-b">
-                      <h3 className="font-semibold flex items-center">
-                        <Tag className="mr-2 h-4 w-4" />
-                        Pricing & Inventory
-                      </h3>
-                      <Button variant="ghost" size="sm">
-                        <Edit3 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <CardContent className="p-6">
-                      <div className="space-y-6">
-                        <div>
-                          <div className="flex justify-between items-center mb-2">
-                            <Label
-                              htmlFor="price"
-                              className="text-xs uppercase text-muted-foreground"
-                            >
-                              Price
-                            </Label>
-                            <span className="text-2xl font-bold">$99.00</span>
-                          </div>
-                          <Slider
-                            defaultValue={[99]}
-                            max={500}
-                            step={1}
-                            className="mt-2"
-                          />
-                        </div>
-
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-2">
-                            <Switch id="promotion" />
-                            <Label htmlFor="promotion">Promotional Price</Label>
-                          </div>
-                          <Input
-                            type="number"
-                            className="w-24"
-                            placeholder="$0.00"
-                            disabled
-                          />
-                        </div>
-
-                        <div>
-                          <Label
-                            htmlFor="quantity"
-                            className="text-xs uppercase text-muted-foreground"
-                          >
-                            Quantity in Stock
-                          </Label>
-                          <div className="flex items-center mt-1">
-                            <Button
-                              variant="outline"
-                              size="icon"
-                              className="rounded-r-none"
-                            >
-                              -
-                            </Button>
-                            <Input
-                              id="quantity"
-                              type="number"
-                              className="rounded-none text-center"
-                              value="100"
-                            />
-                            <Button
-                              variant="outline"
-                              size="icon"
-                              className="rounded-l-none"
-                            >
-                              +
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
+                  </form>
+                </Form>
               </TabsContent>
 
               {/* Preview Tab */}
               <TabsContent value="preview" className="mt-6">
-                <Card>
-                  <CardContent className="p-0">
-                    <div className="bg-white p-6 border-b text-center">
-                      <p className="text-sm text-muted-foreground">
-                        This is how customers will see your product
-                      </p>
-                    </div>
-
-                    <div className="p-6">
-                      <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
-                        {/* Product Image Gallery */}
-                        <div className="space-y-4">
-                          <div className="aspect-square bg-slate-100 rounded-lg flex items-center justify-center">
-                            <ImagePlus className="h-12 w-12 text-slate-300" />
-                          </div>
-
-                          <div className="grid grid-cols-4 gap-2">
-                            <div className="aspect-square bg-slate-100 rounded-md"></div>
-                            <div className="aspect-square bg-slate-100 rounded-md"></div>
-                            <div className="aspect-square bg-slate-100 rounded-md"></div>
-                            <div className="aspect-square bg-slate-100 rounded-md"></div>
-                          </div>
-                        </div>
-
-                        {/* Product Details */}
-                        <div className="space-y-6">
-                          <div>
-                            <h2 className="text-2xl font-bold">Product Name</h2>
-                            <p className="text-muted-foreground">
-                              By Brand Name
-                            </p>
-                          </div>
-
-                          <div className="flex items-center gap-2">
-                            <Badge>Medical</Badge>
-                            <Badge>Equipment</Badge>
-                          </div>
-
-                          <div>
-                            <div className="text-3xl font-bold">$99.00</div>
-                            <div className="text-sm text-muted-foreground">
-                              In Stock: 100 units
-                            </div>
-                          </div>
-
-                          <div className="space-y-2">
-                            <Button className="w-full">Add to Cart</Button>
-                            <Button variant="outline" className="w-full">
-                              Add to Wishlist
-                            </Button>
-                          </div>
-
-                          <div>
-                            <h3 className="font-medium mb-2">Description</h3>
-                            <p className="text-sm text-muted-foreground">
-                              Main product description will appear here.
-                            </p>
-                          </div>
-
-                          <div>
-                            <h3 className="font-medium mb-2">
-                              Technical Details
-                            </h3>
-                            <p className="text-sm text-muted-foreground">
-                              Additional technical information will appear here.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                <Preview />
               </TabsContent>
 
               {/* Data View Tab */}
-              <TabsContent value="data" className="mt-6">
+              {/* <TabsContent value="data" className="mt-6">
                 <Card>
                   <CardContent className="p-6">
                     <div className="space-y-4">
@@ -441,12 +193,21 @@ export default function ProductCreatorWorkspace() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </TabsContent> */}
             </Tabs>
 
             {/* Action Bar */}
             <div className="flex justify-between items-center bg-white rounded-lg p-4 shadow-sm">
-              <Button variant="outline">Save Draft</Button>
+              <Button
+                variant="outline"
+                disabled={form.formState.isSubmitting}
+                onClick={form.handleSubmit((data: any) => {
+                  console.log("valuz", data);
+                  alert("Form submitted");
+                })}
+              >
+                Save Draft
+              </Button>
 
               <div className="flex items-center gap-2">
                 <Button variant="outline">Preview</Button>
