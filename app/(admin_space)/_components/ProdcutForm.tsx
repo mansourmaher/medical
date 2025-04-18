@@ -22,6 +22,8 @@ import { z } from "zod";
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Uplaod_Image_Products from "./Uplaod_Image_Products";
+import { Quando } from "next/font/google";
 
 const ProductCreatorSchema = z.object({
   identity: z.object({
@@ -30,9 +32,16 @@ const ProductCreatorSchema = z.object({
     recommendedFor: z.array(z.string()).optional(),
     verifiedBy: z.array(z.string()).optional(),
   }),
+  images: z.array(z.string()).min(1, "At least one image is required"),
   descreptions: z.object({
     primary: z.string().min(1, "Primary description is required"),
     technical: z.string().optional(),
+  }),
+  pricing: z.object({
+    price: z.string().min(1, "Price is required"),
+    hasPromotion: z.boolean(),
+    promotion: z.string().optional(),
+    quantity: z.string().min(1, "Quantity is required"),
   }),
 });
 
@@ -46,9 +55,16 @@ export default function ProductCreatorWorkspace() {
         recommendedFor: [],
         verifiedBy: [],
       },
+      images: [],
       descreptions: {
         primary: "",
         technical: "",
+      },
+      pricing: {
+        price: "",
+        hasPromotion: false,
+        promotion: undefined,
+        quantity: "0",
       },
     },
   });
@@ -105,7 +121,7 @@ export default function ProductCreatorWorkspace() {
                       <Prodcut_Identity />
 
                       {/* Visual Gallery Card */}
-                      <Galery />
+                      <Uplaod_Image_Products />
 
                       {/* Description Card */}
                       <Descreption_Card />

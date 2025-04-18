@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images:{
-    domains: ["chatgpt.com"],
+    domains: ["chatgpt.com","utfs.io","obaeyuhk7k.ufs.sh"],
   }
 };
 
